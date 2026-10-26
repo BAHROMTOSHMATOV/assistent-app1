@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mein Assistent</title>
+  <meta name="description" content="Persönlicher Assistent für Aufgaben, Termine und Projekte">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Assistent">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="nav" aria-label="Navigation">
+      <div class="brand"><img src="icons/icon.svg" alt=""><span>Assistent</span></div>
+      <button class="nav-btn active" data-view="heute"><span class="ic">☀️</span><span>Heute</span></button>
+      <button class="nav-btn" data-view="plan"><span class="ic">📅</span><span>Planung</span></button>
+      <button class="nav-btn" data-view="projekte"><span class="ic">📁</span><span>Projekte</span></button>
+      <button class="nav-btn" data-view="erledigt"><span class="ic">✅</span><span>Erledigt</span></button>
+      <button class="nav-btn" data-view="einstellungen"><span class="ic">⚙️</span><span>Mehr</span></button>
+    </nav>
+
+    <main class="main">
+      <form id="quick" class="quick" autocomplete="off">
+        <input id="quick-input" type="text" enterkeyhint="done"
+               placeholder="z. B. Gespräch mit Ali morgen 14 Uhr #Bau !hoch">
+        <button type="button" id="mic" class="icon-btn" title="Spracheingabe" hidden>🎤</button>
+        <button type="submit" class="primary">+</button>
+      </form>
+      <p class="hint" id="quick-preview"></p>
+
+      <section id="view" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <dialog id="edit">
+    <form method="dialog" id="edit-form">
+      <h2 id="edit-title">Eintrag</h2>
+      <label>Titel<input name="title" required></label>
+      <div class="row">
+        <label>Art
+          <select name="type">
+            <option value="task">Aufgabe</option>
+            <option value="termin">Termin / Gespräch</option>
+          </select>
+        </label>
+        <label>Priorität
+          <select name="priority">
+            <option value="1">Niedrig</option>
+            <option value="2">Normal</option>
+            <option value="3">Hoch</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Datum<input name="date" type="date"></label>
+        <label>Uhrzeit<input name="time" type="time"></label>
+      </div>
+      <div class="row">
+        <label>Projekt<select name="projectId"></select></label>
+        <label>Erinnern
+          <select name="remind">
+            <option value="">Keine Erinnerung</option>
+            <option value="0">Zur Uhrzeit</option>
+            <option value="5">5 Min. vorher</option>
+            <option value="15">15 Min. vorher</option>
+            <option value="30">30 Min. vorher</option>
+            <option value="60">1 Std. vorher</option>
+            <option value="1440">1 Tag vorher</option>
+          </select>
+        </label>
+      </div>
+      <label>Vorbereitung / Checkliste <small>(eine Zeile = ein Punkt)</small>
+        <textarea name="checklist" rows="4" placeholder="Unterlagen ausdrucken&#10;Fragen notieren"></textarea>
+      </label>
+      <label>Notizen<textarea name="notes" rows="3"></textarea></label>
+      <div class="dialog-actions">
+        <button type="button" id="edit-delete" class="danger">Löschen</button>
+        <button type="button" id="edit-ics" class="ghost" title="In den Kalender des Handys/PCs übernehmen">📆 Kalender</button>
+        <span class="spacer"></span>
+        <button value="cancel" formnovalidate class="ghost">Abbrechen</button>
+        <button value="save" class="primary">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="project-dialog">
+    <form method="dialog" id="project-form">
+      <h2>Projekt</h2>
+      <label>Name<input name="name" required></label>
+      <label>Ziel <small>(was soll am Ende erreicht sein?)</small><input name="goal"></label>
+      <div class="row">
+        <label>Deadline<input name="deadline" type="date"></label>
+        <label>Farbe<input name="color" type="color" value="#4f46e5"></label>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" id="project-delete" class="danger">Löschen</button>
+        <span class="spacer"></span>
+        <button value="cancel" formnovalidate class="ghost">Abbrechen</button>
+        <button value="save" class="primary">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
