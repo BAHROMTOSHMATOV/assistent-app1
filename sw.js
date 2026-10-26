@@ -1,16 +1,9 @@
-// Service Worker: macht die App offline-fähig und zeigt Erinnerungen an.
-const CACHE = "assistent-v1";
+// Service worker: ilovani oflayn ochadi va eslatmani bosganda ilovani ko'rsatadi.
+const CACHE = "yordamchi-v1";
 const FILES = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./manifest.webmanifest",
-  "./icons/icon.svg",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/maskable-512.png",
-  "./icons/apple-touch-icon.png",
+  "./", "./index.html", "./style.css", "./app.js", "./manifest.webmanifest",
+  "./vendor/anthropic-sdk.mjs",
+  "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png",
 ];
 
 self.addEventListener("install", (e) => {
@@ -19,15 +12,14 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("activate", (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
-  );
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))));
   self.clients.claim();
 });
 
-// Netzwerk zuerst (für Updates), bei Offline aus dem Cache.
+// Faqat o'z fayllarimiz keshlanadi; Claude API so'rovlari to'g'ridan-to'g'ri internetga ketadi.
 self.addEventListener("fetch", (e) => {
-  if (e.request.method !== "GET") return;
+  const url = new URL(e.request.url);
+  if (e.request.method !== "GET" || url.origin !== self.location.origin) return;
   e.respondWith(
     fetch(e.request)
       .then((res) => {
@@ -39,7 +31,6 @@ self.addEventListener("fetch", (e) => {
   );
 });
 
-// Klick auf eine Erinnerung öffnet die App.
 self.addEventListener("notificationclick", (e) => {
   e.notification.close();
   e.waitUntil(

@@ -1,113 +1,83 @@
 <!doctype html>
-<html lang="de">
+<html lang="uz">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Mein Assistent</title>
-  <meta name="description" content="Persönlicher Assistent für Aufgaben, Termine und Projekte">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Yordamchi</title>
+  <meta name="description" content="Claude asosidagi shaxsiy ovozli yordamchi: vazifalarni yozib boradi va eslatib turadi">
+  <meta name="theme-color" content="#0e0c24">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Assistent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Yordamchi">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="layout">
-    <nav class="nav" aria-label="Navigation">
-      <div class="brand"><img src="icons/icon.svg" alt=""><span>Assistent</span></div>
-      <button class="nav-btn active" data-view="heute"><span class="ic">☀️</span><span>Heute</span></button>
-      <button class="nav-btn" data-view="plan"><span class="ic">📅</span><span>Planung</span></button>
-      <button class="nav-btn" data-view="projekte"><span class="ic">📁</span><span>Projekte</span></button>
-      <button class="nav-btn" data-view="erledigt"><span class="ic">✅</span><span>Erledigt</span></button>
-      <button class="nav-btn" data-view="einstellungen"><span class="ic">⚙️</span><span>Mehr</span></button>
-    </nav>
+  <div class="app">
+    <header class="top">
+      <button class="top-btn" id="open-tasks" title="Vazifalar">
+        <svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>
+        <span class="badge" id="task-count" hidden>0</span>
+      </button>
+      <div class="title">Yordamchi</div>
+      <button class="top-btn" id="open-settings" title="Sozlamalar">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </header>
 
-    <main class="main">
-      <form id="quick" class="quick" autocomplete="off">
-        <input id="quick-input" type="text" enterkeyhint="done"
-               placeholder="z. B. Gespräch mit Ali morgen 14 Uhr #Bau !hoch">
-        <button type="button" id="mic" class="icon-btn" title="Spracheingabe" hidden>🎤</button>
-        <button type="submit" class="primary">+</button>
-      </form>
-      <p class="hint" id="quick-preview"></p>
+    <section class="stage">
+      <div class="orb idle" id="orb"><div class="orb-core"></div><div class="orb-ring"></div></div>
+      <div class="status" id="status">Salom! Gapiring yoki yozing.</div>
+    </section>
 
-      <section id="view" aria-live="polite"></section>
-    </main>
+    <main class="chat" id="chat" aria-live="polite"></main>
+
+    <div class="chips" id="chips">
+      <button data-say="Bugun nima ishlarim bor?">Bugun nima bor?</button>
+      <button data-say="Ertangi rejam qanday?">Ertangi reja</button>
+      <button data-say="Muddati o'tgan vazifalarim bormi?">Kechikkanlar</button>
+      <button data-say="Shu hafta uchun reja tuzib ber">Haftalik reja</button>
+    </div>
+
+    <form class="composer" id="composer" autocomplete="off">
+      <input id="text" type="text" enterkeyhint="send" placeholder="Masalan: ertaga soat 14 da Ali bilan uchrashuv">
+      <button type="submit" class="send" id="send" title="Yuborish">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <button type="button" class="mic" id="mic" title="Gapirish">
+        <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      </button>
+    </form>
   </div>
 
-  <dialog id="edit">
-    <form method="dialog" id="edit-form">
-      <h2 id="edit-title">Eintrag</h2>
-      <label>Titel<input name="title" required></label>
-      <div class="row">
-        <label>Art
-          <select name="type">
-            <option value="task">Aufgabe</option>
-            <option value="termin">Termin / Gespräch</option>
-          </select>
-        </label>
-        <label>Priorität
-          <select name="priority">
-            <option value="1">Niedrig</option>
-            <option value="2">Normal</option>
-            <option value="3">Hoch</option>
-          </select>
-        </label>
-      </div>
-      <div class="row">
-        <label>Datum<input name="date" type="date"></label>
-        <label>Uhrzeit<input name="time" type="time"></label>
-      </div>
-      <div class="row">
-        <label>Projekt<select name="projectId"></select></label>
-        <label>Erinnern
-          <select name="remind">
-            <option value="">Keine Erinnerung</option>
-            <option value="0">Zur Uhrzeit</option>
-            <option value="5">5 Min. vorher</option>
-            <option value="15">15 Min. vorher</option>
-            <option value="30">30 Min. vorher</option>
-            <option value="60">1 Std. vorher</option>
-            <option value="1440">1 Tag vorher</option>
-          </select>
-        </label>
-      </div>
-      <label>Vorbereitung / Checkliste <small>(eine Zeile = ein Punkt)</small>
-        <textarea name="checklist" rows="4" placeholder="Unterlagen ausdrucken&#10;Fragen notieren"></textarea>
-      </label>
-      <label>Notizen<textarea name="notes" rows="3"></textarea></label>
-      <div class="dialog-actions">
-        <button type="button" id="edit-delete" class="danger">Löschen</button>
-        <button type="button" id="edit-ics" class="ghost" title="In den Kalender des Handys/PCs übernehmen">📆 Kalender</button>
-        <span class="spacer"></span>
-        <button value="cancel" formnovalidate class="ghost">Abbrechen</button>
-        <button value="save" class="primary">Speichern</button>
-      </div>
+  <!-- Vazifalar paneli -->
+  <aside class="sheet" id="tasks-sheet" aria-hidden="true">
+    <div class="sheet-head">
+      <h2>Vazifalar</h2>
+      <button class="top-btn" data-close>✕</button>
+    </div>
+    <form class="quick-add" id="quick-add">
+      <input name="title" placeholder="Yangi vazifa…" required>
+      <input name="due" type="datetime-local">
+      <button class="primary">Qo'shish</button>
     </form>
-  </dialog>
+    <div id="task-list"></div>
+  </aside>
 
-  <dialog id="project-dialog">
-    <form method="dialog" id="project-form">
-      <h2>Projekt</h2>
-      <label>Name<input name="name" required></label>
-      <label>Ziel <small>(was soll am Ende erreicht sein?)</small><input name="goal"></label>
-      <div class="row">
-        <label>Deadline<input name="deadline" type="date"></label>
-        <label>Farbe<input name="color" type="color" value="#4f46e5"></label>
-      </div>
-      <div class="dialog-actions">
-        <button type="button" id="project-delete" class="danger">Löschen</button>
-        <span class="spacer"></span>
-        <button value="cancel" formnovalidate class="ghost">Abbrechen</button>
-        <button value="save" class="primary">Speichern</button>
-      </div>
-    </form>
-  </dialog>
+  <!-- Sozlamalar paneli -->
+  <aside class="sheet" id="settings-sheet" aria-hidden="true">
+    <div class="sheet-head">
+      <h2>Sozlamalar</h2>
+      <button class="top-btn" data-close>✕</button>
+    </div>
+    <div class="settings" id="settings"></div>
+  </aside>
 
-  <div id="toast" class="toast" role="status"></div>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="toast" id="toast" role="status"></div>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

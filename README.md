@@ -1,70 +1,47 @@
-# 🧠 Mein Assistent – Aufgaben, Termine & Projekte
+# 🎙 Yordamchi — Claude asosidagi shaxsiy ovozli yordamchi
 
-Eine persönliche Assistenz-App für **Handy (Android/iPhone)** und **Windows-Laptop**.
-Es ist eine installierbare Web-App (PWA): ein Code, läuft überall, funktioniert offline.
+Siri'ga o'xshash yordamchi. U telefonda (Android, iPhone) va Windows kompyuterda ishlaydi.
+Unga oddiy gapirasiz yoki yozasiz, u Claude yordamida gapingizni tushunadi, vazifa va uchrashuvlaringizni yozib boradi va vaqti kelganda eslatadi.
 
-## Was die App kann
+## Nimalar qila oladi
 
-- **☀️ Tagesbriefing** – „Guten Morgen! Heute: 1 Termin und 3 Aufgaben. Um 14:00 hast du: *Gespräch mit Ali* (in 2 Std.)“ –
-  inkl. Tipps: überfällige Aufgaben, offene Vorbereitung, Projekte ohne nächsten Schritt. Mit 🔊 *Vorlesen*.
-- **✍️ Schnelleingabe in normalem Deutsch** (auch per 🎤 Spracheingabe):
-  `Gespräch mit Ali morgen 14 Uhr #Bau !hoch`
-  → Termin, morgen 14:00, Projekt „Bau“, wichtig, Erinnerung 15 Min. vorher.
+- 🎙 **Ovoz bilan boshqarish.** Mikrofonni (yoki sharni) bosing va gapiring: *"Ertaga soat 14 da Ali bilan uchrashuvim bor, shartnomani olib borishim kerak"*. Yordamchi uchrashuvni yozib qo'yadi va 15 daqiqa oldin eslatadi.
+- ⏰ **Eslatmalar.** Kompyuter yoki telefonda bildirishnoma chiqadi, yordamchi eslatmani ovoz chiqarib ham o'qiydi.
+- ☀️ **Ertalabki brifing.** Har kuni belgilangan vaqtda bugungi rejani, muddati o'tgan ishlarni aytadi va bitta maslahat beradi.
+- 💬 **Savollarga javob.** *"Bugun nima ishlarim bor?"*, *"Shu hafta uchun reja tuzib ber"*, *"Hisobotni topshirdim"* deyishingiz mumkin, u tushunadi.
+- 🧠 **Xotira.** Siz haqingizdagi muhim narsalarni (odamlar, loyihalar, odatlar) eslab qoladi.
+- 📋 **Vazifalar ro'yxati.** Chap yuqoridagi tugma orqali ochiladi. Vazifani u yerda bajarilgan deb belgilash yoki qo'lda qo'shish mumkin.
+- Barcha ma'lumotlar **faqat sizning qurilmangizda** saqlanadi.
 
-  | Eingabe | Bedeutung |
-  |---|---|
-  | `heute`, `morgen`, `übermorgen`, `Montag`…`Sonntag`, `25.10.` | Datum |
-  | `14 Uhr`, `um 9:30`, `16.45 Uhr` | Uhrzeit (+ automatische Erinnerung) |
-  | `#Projekt` | Projekt (wird automatisch angelegt) |
-  | `!hoch` / `!!` / `!niedrig` | Priorität |
-  | Gespräch, Termin, Meeting, Call, Arzt … | wird als Termin markiert |
-- **🔔 Erinnerungen** als System-Benachrichtigung (Windows-Infocenter / Handy) – zur Uhrzeit oder 5 Min. … 1 Tag vorher.
-- **☑️ Vorbereitung** – Checkliste pro Termin („Unterlagen drucken“, „Fragen notieren“), Fortschritt wird im Briefing gemeldet.
-- **📁 Projekte** – Ziel, Deadline, Fortschrittsbalken, *nächster Schritt* und Warnungen
-  („Kein nächster Schritt geplant“, „Deadline in 3 Tagen, noch 5 offen“).
-- **📆 Kalender-Export (.ics)** – Termine mit Erinnerung in Google-/Apple-/Outlook-Kalender übernehmen.
-- **💾 Sicherung** – Export/Import als JSON, um Handy und Laptop abzugleichen.
-- Hell/Dunkel-Modus automatisch, alle Daten bleiben **nur auf deinem Gerät**.
+## Kerakli narsa: Claude API kaliti
 
-## Starten
+1. <https://console.anthropic.com> saytiga kiring va ro'yxatdan o'ting.
+2. **Billing** bo'limida hisobni to'ldiring (boshlash uchun 5 $ yetadi). **Limits** bo'limida oylik chegara ham qo'ying.
+3. **API Keys → Create Key** ni bosing va kalitni nusxalang (u `sk-ant-...` bilan boshlanadi).
+4. Ilovani birinchi marta ochganingizda kalitni kiritib, **Saqlash** ni bosing.
 
-### Variante A: Online über GitHub Pages (empfohlen – dann auf Handy *und* Laptop nutzbar)
-1. Im Repository: **Settings → Pages → Source: „Deploy from a branch“**, Branch `main`, Ordner `/ (root)` → *Save*.
-2. Nach ca. 1 Minute ist die App erreichbar unter
-   `https://bahromtoshmatov.github.io/assistent-app1/`
+Taxminiy xarajat: kuniga 20–30 ta xabar yuborilsa, **Opus 5.5** (eng aqlli) bilan oyiga taxminan 15–30 $, **Sonnet 5.5** bilan taxminan 2 baravar arzon, **Haiku 5.5** bilan oyiga 1 $ atrofida chiqadi. Modelni sozlamalarda almashtirish mumkin.
 
-(Alternative ohne GitHub: den Projektordner auf <https://app.netlify.com/drop> ziehen.)
+## Internetga qo'yish (GitHub'siz)
 
-### Variante B: Lokal auf dem Laptop
-```bash
-cd assistent-app1
-python -m http.server 8000
-```
-Dann im Browser <http://localhost:8000> öffnen.
+1. <https://app.netlify.com/drop> saytini oching (bepul, ro'yxatdan o'tish mumkin).
+2. `yordamchi.zip` faylini oching (sichqonchaning o'ng tugmasi → **Extract All / Hammasini chiqarish**) va hosil bo'lgan `yordamchi` papkasini sahifaga sudrab tashlang.
+3. Bir necha soniyada `https://....netlify.app` ko'rinishidagi manzil beriladi. Shu manzilni telefonda ham, kompyuterda ham oching.
 
-## Als App installieren
+## O'rnatish
 
-| Gerät | So geht’s |
+| Qurilma | Qanday qilinadi |
 |---|---|
-| **Windows** (Edge oder Chrome) | Seite öffnen → in der Adressleiste auf **„App installieren“ ⊕** klicken. Die App erscheint im Startmenü und kann an die Taskleiste angeheftet werden. |
-| **Android** (Chrome) | Seite öffnen → Menü **⋮ → „App installieren“**. |
-| **iPhone** (Safari, iOS 16.4+) | **Teilen ⬆️ → „Zum Home-Bildschirm“**, dann die App vom Home-Bildschirm öffnen und Erinnerungen erlauben. |
+| **Windows** (Edge yoki Chrome) | Manzil satridagi ⊕ **"Ilovani o'rnatish"** belgisini bosing. Ilova Start menyusida paydo bo'ladi. |
+| **Android** (Chrome) | ⋮ menyusi → **"Ilovani o'rnatish"**. |
+| **iPhone** (Safari) | Ulashish ⬆️ → **"Bosh ekranga qo'shish"**. |
 
-Danach in der App unter **Mehr → „Benachrichtigungen erlauben“** tippen.
+Keyin **Sozlamalar → Eslatmalar → "Ruxsat berish"** ni bosing.
 
-## Gut zu wissen
+## Bilib qo'ying
 
-- **Erinnerungen** kommen, solange die App bzw. der Browser im Hintergrund läuft.
-  Damit wichtige Termine auch bei komplett geschlossener App klingeln: im Eintrag auf **„📆 Kalender“** tippen –
-  dann übernimmt der Kalender des Handys bzw. Outlook die Erinnerung.
-- **Abgleich zwischen Geräten**: *Mehr → Sicherung speichern* auf Gerät 1, *Sicherung laden* auf Gerät 2.
-
-## Dateien
-
-| Datei | Inhalt |
-|---|---|
-| `index.html` | Oberfläche und Dialoge |
-| `style.css` | Design (Handy: Leiste unten, PC: Seitenleiste) |
-| `app.js` | Logik: Speicher, Verstehen der Schnelleingabe, Briefing, Erinnerungen, Kalender-Export |
-| `sw.js` | Service Worker (offline, Benachrichtigungen) |
-| `manifest.webmanifest`, `icons/` | Installation als App |
+- Eslatmalar ilova (yoki brauzer) **fonda ochiq turganda** keladi. Kompyuterda ilovani yopmang, shunchaki kichraytirib qo'ying.
+- O'zbekcha **ovozli kiritish** Chrome va Edge'da ishlaydi. iPhone'da tugmani bosib gapirish o'rniga klaviaturadagi 🎤 diktovkadan foydalaning.
+- **Ovozli javob** uchun qurilmada o'zbekcha ovoz bo'lishi kerak. Agar yo'q bo'lsa, sozlamalarda turkcha (tr-TR) ovozni tanlang, u o'zbekcha matnni tushunarli o'qiydi.
+- Telefon va kompyuterdagi ma'lumotlar o'zi moslashmaydi: **Sozlamalar → Ma'lumotlar → Saqlash / Yuklash** orqali ko'chiriladi.
+- Kompyuterda **Ctrl+M** tugmasi mikrofonni yoqadi.
