@@ -31,13 +31,13 @@ Es ist eine installierbare Web-App (PWA): ein Code, läuft überall, funktionier
 ### Variante A: Online über GitHub Pages (empfohlen – dann auf Handy *und* Laptop nutzbar)
 1. Im Repository: **Settings → Pages → Source: „Deploy from a branch“**, Branch `main`, Ordner `/ (root)` → *Save*.
 2. Nach ca. 1 Minute ist die App erreichbar unter
-   `https://bahromtoshmatov.github.io/python-darslar/43-assistent-app/`
+   `https://bahromtoshmatov.github.io/assistent-app1/`
 
-(Alternative ohne GitHub: den Ordner `43-assistent-app` auf <https://app.netlify.com/drop> ziehen.)
+(Alternative ohne GitHub: den Projektordner auf <https://app.netlify.com/drop> ziehen.)
 
 ### Variante B: Lokal auf dem Laptop
 ```bash
-cd 43-assistent-app
+cd assistent-app1
 python -m http.server 8000
 ```
 Dann im Browser <http://localhost:8000> öffnen.
